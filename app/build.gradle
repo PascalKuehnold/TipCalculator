@@ -60,6 +60,9 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    //Viewmodel lifecycle
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+
     //Icons
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
 }
