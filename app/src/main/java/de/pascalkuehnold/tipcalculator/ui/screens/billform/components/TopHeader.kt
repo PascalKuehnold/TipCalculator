@@ -21,10 +21,15 @@ import androidx.compose.ui.unit.dp
  */
 
 
+/**
+ * Composable Function for the Topheader of the app
+ *
+ * @param totalPerPerson The amount which each person must pay
+ */
 @Composable
-@Preview
 fun TopHeader(
-    totalPerPerson: Double = 0.0
+    totalPerPerson: Double = 0.0,
+    totalBill: Double = 0.0
 ) {
     Surface(
         modifier = Modifier
@@ -41,6 +46,7 @@ fun TopHeader(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val total = "%.2f".format(totalPerPerson)
+            val _totalBill = "%.2f".format(totalBill)
 
             Text(
                 text = "Total Person",
@@ -50,6 +56,11 @@ fun TopHeader(
                 text = "$$total",
                 style = MaterialTheme.typography.h4,
                 fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "$$_totalBill",
+                style = MaterialTheme.typography.subtitle2,
+                fontWeight = FontWeight.Light
             )
         }
     }
