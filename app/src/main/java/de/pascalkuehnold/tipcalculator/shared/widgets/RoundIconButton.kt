@@ -19,7 +19,19 @@ import androidx.compose.ui.unit.dp
  * Created by Pascal Kühnold on 7/13/2022.
  */
 
+//Variable for the Size of the button
 val IconButtonSizeModifier = Modifier.size(40.dp)
+
+/**
+ * This composable function is responsible for creating rounded buttons
+ *
+ * @param modifier for customizing, using the default one
+ * @param imageVector for displaying an Icon or Image for the button
+ * @param onClick lambda function for firing the desired logic for the button
+ * @param tint variable for the color of the icon
+ * @param backgroundColor the background color for the button
+ * @param elevation
+ */
 @Composable
 fun RoundIconButton(
     modifier: Modifier = Modifier,
