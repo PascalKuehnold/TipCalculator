@@ -9,7 +9,6 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AttachMoney
-import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
@@ -21,6 +20,19 @@ import androidx.compose.ui.unit.sp
 
 /**
  * Created by Pascal Kühnold on 7/13/2022.
+ */
+
+/**
+ * Composable function for a shared widget which creates an Inputfield
+ *
+ * @param modifier The modifier to be applied to the InputField
+ * @param valueState The state of the text within the InputField
+ * @param labelId The title for the Label
+ * @param enabled Boolean if the inputfield is enabled or not
+ * @param isSingleLine Boolean to make the inputField singleLine or not
+ * @param keyboardType The Keyboard type for the input field
+ * @param imeAction The Action displayed on the internal keyboard controller
+ * @param onAction The actions that will be triggered in response to the users actions on the keyboard
  */
 @Composable
 fun InputField(
