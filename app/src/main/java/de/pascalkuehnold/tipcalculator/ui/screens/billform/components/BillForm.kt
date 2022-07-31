@@ -20,19 +20,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import de.pascalkuehnold.tipcalculator.domain.BillFormViewModel
 import de.pascalkuehnold.tipcalculator.shared.widgets.InputField
 import de.pascalkuehnold.tipcalculator.shared.widgets.RoundIconButton
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 /**
  * Created by Pascal Kühnold on 7/13/2022.
+ */
+
+/**
+ * Composable function for the BillForm
+ * It represents the main screen of this app
+ *
+ * @param modifier  The modifier to be applied to the BillForm.
+ * @param range The range value of the percentage slider
+ * @param onValChange Function which is called when changing values
+ * @param viewModel The viewModel for the composable
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BillForm(
     modifier: Modifier = Modifier,
-    range: IntRange = 1..100,
+    range: IntRange = (1..100 step 5) as IntRange,
     onValChange: (String) -> Unit = {},
     viewModel: BillFormViewModel = viewModel()
 ) {
@@ -45,15 +55,28 @@ fun BillForm(
         totalBillState.value.trim().isNotEmpty()
     }
 
+    /**
+     * The position state of the slider
+     */
     val sliderPositionState = remember {
         mutableStateOf(0f)
     }
+
+    /**
+     * Calculating the Tip Percentage by using the sliderPositionState * 100
+     */
     val tipPercentage = (sliderPositionState.value * 100).toInt()
 
-
+    /**
+     * Getting the LocalSoftwareKeyboardController for hiding the keyboard
+     */
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    TopHeader(totalPerPerson = viewModel.totalPerPersonState)
+    TopHeader(
+        totalPerPerson = viewModel.totalPerPersonState,
+
+        totalBill = viewModel.totalBillAmountWithTip
+    )
 
     Surface(
         modifier = modifier
@@ -90,7 +113,12 @@ fun BillForm(
                     viewModel.calculateTotalPerPerson(
                         totalBill = totalBillState.value.toDouble(),
                         personsToSplitBy = viewModel.splitByState,
-                        tipPercentage = viewModel.tipPercentage
+                        tipPercentage = tipPercentage
+                    )
+                viewModel.totalBillAmountWithTip =
+                    viewModel.getTotalBillAmountPlusTip(
+                        totalBill = totalBillState.value.toDouble(),
+                        tipPercentage = tipPercentage
                     )
 
                 Row(
@@ -123,7 +151,7 @@ fun BillForm(
                                     viewModel.calculateTotalPerPerson(
                                         totalBill = totalBillState.value.toDouble(),
                                         personsToSplitBy = viewModel.splitByState,
-                                        tipPercentage = viewModel.tipPercentage
+                                        tipPercentage = tipPercentage
                                     )
                             }
                         )
@@ -145,7 +173,7 @@ fun BillForm(
                                     viewModel.calculateTotalPerPerson(
                                         totalBill = totalBillState.value.toDouble(),
                                         personsToSplitBy =  viewModel.splitByState,
-                                        tipPercentage = viewModel.tipPercentage
+                                        tipPercentage = tipPercentage
                                     )
 
                             }
@@ -183,8 +211,11 @@ fun BillForm(
                     //Slider
                     Slider(
                         value = sliderPositionState.value,
+                        steps = (range.last / 5) - 1,
                         onValueChange = {newVal ->
+
                             sliderPositionState.value = newVal
+
                             viewModel.tipAmountState = viewModel.calculateTotalTip(
                                 totalBill = totalBillState.value.toDouble(),
                                 tipPercentage = tipPercentage
